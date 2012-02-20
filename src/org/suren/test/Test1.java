@@ -34,7 +34,7 @@ public class Test1
 		"License.expiry", "Server.macaddress", "Server.sno", "signature.data"};
 	
 	
-//	private static final String data = "洪卫综合安全网关";
+	private static final String data = "洪卫综合安全网关";
 	private static final String file = "c://license//license.properties";
 	private static final String privateKey = "c://license//ca.key";
 	private static final String publicCert = "c://license//ca.crt";
