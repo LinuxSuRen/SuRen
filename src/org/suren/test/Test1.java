@@ -1,16 +1,10 @@
 package org.suren.test;
 
-
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.security.KeyFactory;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Signature;
@@ -23,8 +17,6 @@ import java.util.Properties;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
-
-
 public class Test1
 {
 	private static BASE64Encoder encoder = new sun.misc.BASE64Encoder();   
@@ -34,6 +26,7 @@ public class Test1
 		"License.expiry", "Server.macaddress", "Server.sno", "signature.data"};
 	
 	
+	@SuppressWarnings("unused")
 	private static final String data = "洪卫综合安全网关";
 	private static final String file = "c://license//license.properties";
 	private static final String privateKey = "c://license//ca.key";
@@ -48,9 +41,6 @@ public class Test1
 		System.out.println(valid(getVailData()));
 		
 	}
-	
-	
-
 	
 	public static String sig() throws Exception
 	{
@@ -128,7 +118,6 @@ public class Test1
 		return sb.toString();
 	}
 	
-	
 	public static void storeSignData2pro(String signData) throws FileNotFoundException, IOException
 	{
 		Properties pro = new Properties();
@@ -137,14 +126,11 @@ public class Test1
 		pro.store(new FileOutputStream(file), null);
 	}
 	
-	
 	public static String getVailData() throws FileNotFoundException, IOException
 	{
 		Properties pro = new Properties();
 		pro.load(new FileInputStream(file));
 		return pro.getProperty(keys[keys.length - 1]);
 	}
-	
-	
 	
 }

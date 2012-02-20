@@ -111,4 +111,6 @@ public class Test
 
 		pro.store(new FileOutputStream(file), null);
 	}
+	
+	public void test(){}
 }
