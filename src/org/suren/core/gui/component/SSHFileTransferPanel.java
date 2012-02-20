@@ -17,6 +17,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -47,7 +48,10 @@ import org.suren.core.gui.common.TransferPopup;
 import org.suren.core.net.Sftp;
 import org.suren.core.os.UnixFile;
 import org.suren.util.common.NumberUtil;
+import org.suren.util.io.FileUtil;
 import org.suren.util.swing.JTableUtil;
+
+import sun.awt.shell.Win32ShellFolderManager2;
 
 import com.jcraft.jsch.Session;
 
@@ -169,6 +173,11 @@ public class SSHFileTransferPanel extends JPanel
 		return scrollPane;
 	}
 
+	/**
+	 * 左侧栏，显示本地目录
+	 * @return
+	 * @throws MissingComponentException
+	 */
 	private JPanel localFile() throws MissingComponentException
 	{
 		JPanel root = new JPanel();
@@ -259,6 +268,7 @@ public class SSHFileTransferPanel extends JPanel
 			}
 		});
 
+		//处理鼠标事件
 		localTable.addMouseListener(new MouseAdapter() {
 
 			public void mouseClicked(MouseEvent e)
@@ -271,9 +281,8 @@ public class SSHFileTransferPanel extends JPanel
 
 					int row = table.getSelectedRow();
 
-					String value = table.getValueAt(row, 0).toString();
-					File file = new File(value);
-
+					File file = (File) table.getValueAt(row, 0);
+					
 					if (file.isDirectory())
 					{
 						fillList(table, file);
@@ -282,7 +291,7 @@ public class SSHFileTransferPanel extends JPanel
 					{
 						try
 						{
-							if (desktop != null) desktop.open(file);
+							if (!FileUtil.open(file.getPath()) && desktop != null) desktop.open(file);
 						}
 						catch (IOException e1)
 						{
@@ -643,6 +652,11 @@ public class SSHFileTransferPanel extends JPanel
 		return root;
 	}
 
+	/**
+	 * 向table中填充内容
+	 * @param table
+	 * @param file
+	 */
 	private void fillList(JTable table, File file)
 	{
 		if (file == null) return;
