@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<project name="suren" basedir="." default="jar">
+	<description>
+		SuRen Ant File.
+	</description>
+
+	<property name="source" location="e:/work/application/suren/src"/>
+	<property name="classes" location="e:/work/application/suren/bin"/>
+	<property name="libraries" location="e:/work/application/suren/lib"/>
+
+	<property name="suren" location="E:/SuRen"/>
+	<property name="bin" location="${suren}/bin"/>
+	<property name="docs" location="${suren}/docs"/>
+	<property name="api" location="${docs}/api"/>
+	<property name="logs" location="${suren}/logs"/>
+	<property name="conf" location="${suren}/conf"/>
+	<property name="src" location="${docs}/src"/>
+	<property name="lib" location="${suren}/lib"/>
+	<property name="jarname" value="SuRen.jar"/>
+
+	<target name="clean">
+		<delete dir="${suren}"/>
+		<delete dir="${classes}"/>
+	</target>
+
+	<target name="build" depends="clean">
+		<mkdir dir="${suren}"/>
+		<mkdir dir="${bin}"/>
+		<mkdir dir="${docs}"/>
+		<mkdir dir="${api}"/>
+		<mkdir dir="${logs}"/>
+		<mkdir dir="${conf}"/>
+		<mkdir dir="${src}"/>
+		<mkdir dir="${lib}"/>
+
+		<mkdir dir="${classes}"/>
+	</target>
+
+	<target name="document">
+		<echo message="document"/>
+		<javadoc packagenames="org.*"
+			sourcepath="${source}"
+			destdir="${api}"
+			windowtitle="SuRen API"
+			doctitle="This document is for me."
+			private="true">
+		</javadoc>
+	</target>
+
+	<target name="compiler" depends="build,document">
+		<javac destdir="${classes}"
+			classpath="${libraries}/dom4j-1.6.1.jar;${libraries}/jsch-0.1.44.jar;${libraries}/IKAnalyzer3.2.8.jar;${libraries}/lucene-core-3.0.3.jar"
+			nowarn="true"
+			includeAntRuntime="no">
+			<src path="${source}"/>
+			<exclude name="**/test/**"/>
+		</javac>
+		<copy todir="${classes}" includeEmptyDirs="no">
+			<fileset dir="${source}">
+				<exclude name="**/test/**"/>
+				<exclude name="**/*.java"/>
+			</fileset>
+		</copy>
+		<copy todir="${src}">
+			<fileset dir="${source}">
+				<exclude name="**/test/**"/>
+			</fileset>
+		</copy>
+		<copy todir="${lib}">
+			<fileset dir="${libraries}">
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="jar" depends="compiler">
+		<jar destfile="${bin}/${jarname}"
+			filesetmanifest="mergewithoutmain">
+			<manifest>
+				<attribute name="Main-Class" value="org.suren.main.StartUp"/>
+				<attribute name="Class-Path" value="."/>
+			</manifest>
+			<fileset excludes="**/test/**" dir="${classes}"/>
+			<zipfileset src="${libraries}/dom4j-1.6.1.jar"/>
+			<zipfileset src="${libraries}/jsch-0.1.44.jar"/>
+			<zipfileset src="${libraries}/IKAnalyzer3.2.8.jar"/>
+			<zipfileset src="${libraries}/lucene-core-3.0.3.jar"/>
+		</jar>
+	</target>
+</project>
