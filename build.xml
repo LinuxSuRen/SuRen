@@ -4,9 +4,9 @@
 		SuRen Ant File.
 	</description>
 
-	<property name="source" location="e:/work/application/suren/src"/>
-	<property name="classes" location="e:/work/application/suren/bin"/>
-	<property name="libraries" location="e:/work/application/suren/lib"/>
+	<property name="source" location="d:/work/application/suren/src"/>
+	<property name="classes" location="d:/work/application/suren/bin"/>
+	<property name="libraries" location="d:/work/application/suren/lib"/>
 
 	<property name="suren" location="E:/SuRen"/>
 	<property name="bin" location="${suren}/bin"/>
