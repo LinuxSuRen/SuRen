@@ -42,8 +42,8 @@ public class Test1
 	public static void main(String[] args) throws Exception
 	{
 
-//		String data = sig();
-//		storeSignData2pro(data);
+		String data = sig();
+		storeSignData2pro(data);
 		
 		System.out.println(valid(getVailData()));
 		
