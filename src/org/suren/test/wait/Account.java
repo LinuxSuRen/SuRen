@@ -1,0 +1,51 @@
+package org.suren.test.wait;
+
+public class Account {
+
+	private String holderName;
+	private float amount;
+	public Account(String holderName, float amount)
+	{
+		this.holderName = holderName;
+		this.amount = amount;
+	}
+	public String getHolderName() {
+		return holderName;
+	}
+	public void setHolderName(String holderName) {
+		this.holderName = holderName;
+	}
+	public float getAmount() {
+		return amount;
+	}
+	
+	public
+	synchronized
+	boolean deposit(float amt)
+	{
+		if(this.amount >= amt)
+		{
+			this.amount -= amt;
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	public
+	synchronized
+	boolean withdrow(float amt)
+	{
+		if(this.amount >= amt)
+		{
+			this.amount -= amt;
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+}
