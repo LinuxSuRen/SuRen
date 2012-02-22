@@ -10,23 +10,35 @@ public class TestAccount{
 		
 		Account account = new Account("SuRen", 100);
 		
-		for(int i = 0; i < 5; i++)
+		int total = 30;
+		
+		for(int i = 0; i < total; i++)
 		{
 			TestAccount_1 a = new TestAccount_1(account);
 			new Thread(a).start();
-//			new Thread(new TestAccount()).start();
 		}
 		
-		Thread.sleep(3000);
+		for(int i = 0; i < total; i++)
+		{
+			TestAccount_1 a = new TestAccount_1(account);
+			new Thread(a).start();
+		}
 		
-		System.out.println(account.getAmount() + "=======");
+		for(int i = 0; i < total; i++)
+		{
+			TestAccount_1 a = new TestAccount_1(account);
+			new Thread(a).start();
+		}
+		
+		Thread.currentThread().wait();
+		
+		Thread.yield();
 	}
 }
 
 class TestAccount_1 implements Runnable{
 	
 	private Account account;
-	private static float total1 = 0;
 	
 	public TestAccount_1(Account account)
 	{
@@ -35,11 +47,7 @@ class TestAccount_1 implements Runnable{
 
 	@Override
 	public void run() {
-		if(account.deposit(30));
-		{
-			total1 += 30;
-		}
-		
-		System.out.println(total1 + "two" + account.getAmount());
+		account.deposit(30);
 	}
 }
+

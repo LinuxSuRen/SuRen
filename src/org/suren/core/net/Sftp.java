@@ -37,22 +37,15 @@ public class Sftp
 	public Sftp() {
 	}
 
-	public Session open(String user, String host, int port)
+	public Session open(String user, String host, int port) throws JSchException
 	{
 		jsch = new JSch();
-		try
-		{
-			session = jsch.getSession(user, host, port);
+		session = jsch.getSession(user, host, port);
 
-			session.setUserInfo(new UserInfoSimple(Body.rootPanel));
-			session.connect();
+		session.setUserInfo(new UserInfoSimple(Body.rootPanel));
+		session.connect();
 
-			sftp = openChannel();
-		}
-		catch (JSchException e)
-		{
-			e.printStackTrace();
-		}
+		sftp = openChannel();
 
 		return session;
 	}
@@ -66,7 +59,7 @@ public class Sftp
 		return channel;
 	}
 
-	public Session open(String user, String host)
+	public Session open(String user, String host) throws JSchException
 	{
 		return open(user, host, 22);
 	}

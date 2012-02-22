@@ -20,22 +20,23 @@ public class Account {
 	}
 	
 	public
-	synchronized
-	boolean deposit(float amt)
+//	synchronized
+	void deposit(float amt)
 	{
 		if(this.amount >= amt)
 		{
 			this.amount -= amt;
-			return true;
 		}
-		else
+		
+		synchronized(this)
 		{
-			return false;
+			System.out.print("=========");
+			System.out.println();
 		}
 	}
 	
 	public
-	synchronized
+//	synchronized
 	boolean withdrow(float amt)
 	{
 		if(this.amount >= amt)

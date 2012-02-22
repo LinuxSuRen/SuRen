@@ -53,6 +53,7 @@ import org.suren.util.swing.JTableUtil;
 
 import sun.awt.shell.Win32ShellFolderManager2;
 
+import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 
 public class SSHFileTransferPanel extends JPanel
@@ -122,14 +123,23 @@ public class SSHFileTransferPanel extends JPanel
 		this.setLayout(new BorderLayout());
 
 		this.add(fileCenter(), BorderLayout.CENTER);
-		this.add(status(), BorderLayout.SOUTH);
+		this.add(status("Status:"), BorderLayout.SOUTH);
 
 		this.updateUI();
 	}
 
-	private JLabel status()
+	/**
+	 * TODO 在下方显示目前的状态以及消息
+	 * @return
+	 */
+	private JLabel status(String ... msg)
 	{
-		status = new JLabel("Status:");
+		if(status == null)
+		{
+			status = new JLabel();
+		}
+		
+		status.setText(msg[0]);
 
 		return status;
 	}
@@ -396,6 +406,11 @@ public class SSHFileTransferPanel extends JPanel
 		return root;
 	}
 
+	/**
+	 * SSH远程文件列表
+	 * @return
+	 * @throws MissingComponentException
+	 */
 	private JPanel remoteFile() throws MissingComponentException
 	{
 		JPanel root = new JPanel();
@@ -412,6 +427,10 @@ public class SSHFileTransferPanel extends JPanel
 		up.setEnabled(false);
 		refresh.setEnabled(false);
 
+		/*
+		 * TODO 这里要现实从配置文件中读取的ip地址，
+		 * 而且每次成功登录的ip地址都会加到配置文件中
+		 */
 		remotePath.addItem("root@192.168.10.223");
 		remotePath.setEditable(true);
 
@@ -462,11 +481,11 @@ public class SSHFileTransferPanel extends JPanel
 			}
 		});
 
+		//处理ssh连接事件
 		connect.addActionListener(new ActionListener() {
 
 			public void actionPerformed(final ActionEvent e)
 			{
-
 				String cmd = e.getActionCommand();
 				JButton connect = (JButton) e.getSource();
 
@@ -475,19 +494,36 @@ public class SSHFileTransferPanel extends JPanel
 					String hostStr = remotePath.getSelectedItem().toString();
 					String[] hostArr = (hostStr == null ? null : hostStr.split("@"));
 
-					if (hostArr == null || hostArr.length != 2) return;
+					if (hostArr == null || hostArr.length != 2)
+					{
+						status("地址格式不正确");
+						//TODO 提示地址格式不正确
+						return;
+					}
 
 					sftp = new Sftp();
-					session = sftp.open(hostArr[0], hostArr[1]);
+					
+					try
+					{
+						session = sftp.open(hostArr[0], hostArr[1]);
 
-					connect.setText(action[1]);
-					remoteTable.requestFocus();
+						connect.setText(action[1]);
+						remoteTable.requestFocus();
 
-					fillList(remoteTable, new UnixFile("/"));
+						fillList(remoteTable, new UnixFile("/"));
 
-					home.setEnabled(true);
-					up.setEnabled(true);
-					refresh.setEnabled(true);
+						home.setEnabled(true);
+						up.setEnabled(true);
+						refresh.setEnabled(true);
+					}
+					catch (JSchException e1)
+					{
+						status(e1.getMessage());
+						e1.printStackTrace();
+					}
+					finally
+					{
+					}
 				}
 				else if (action[1].equals(cmd))
 				{
