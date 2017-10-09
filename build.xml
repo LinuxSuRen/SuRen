@@ -4,9 +4,9 @@
 		SuRen Ant File.
 	</description>
 
-	<property name="source" location="d:/work/application/suren/src"/>
-	<property name="classes" location="d:/work/application/suren/bin"/>
-	<property name="libraries" location="d:/work/application/suren/lib"/>
+	<property name="source" location="src"/>
+	<property name="classes" location="bin"/>
+	<property name="libraries" location="lib"/>
 
 	<property name="suren" location="E:/SuRen"/>
 	<property name="bin" location="${suren}/bin"/>
@@ -47,7 +47,7 @@
 		</javadoc>
 	</target>
 
-	<target name="compiler" depends="build,document">
+	<target name="compiler" depends="build">
 		<javac destdir="${classes}"
 			classpath="${libraries}/dom4j-1.6.1.jar;${libraries}/jsch-0.1.44.jar;${libraries}/IKAnalyzer3.2.8.jar;${libraries}/lucene-core-3.0.3.jar"
 			nowarn="true"
